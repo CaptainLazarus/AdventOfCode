@@ -47,16 +47,7 @@ Author : No idea
 
 ---
 
-5. Haskell
-```
-sum . take 3 . sortOn Down . map (sum . map read) . splitWhen (== "") . lines <$> readFile "input1"
-```
-
-Author : Abhinav Sarkar
-
----
-
-6. Google sheet (I had no idea this existed)
+5. Google sheet (I had no idea this existed)
 ```
 =SUM(INDEX(LARGE(BYROW(SPLIT(FLATTEN(SPLIT(JOIN(,IF(A:A,A:A&"❆","∞")),"∞")),"❆"),LAMBDA(r,SUM(r))),{1;2;3})))
 ```

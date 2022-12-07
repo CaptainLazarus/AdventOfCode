@@ -1,0 +1,12 @@
+{
+  "name": "problem7",
+  "version": "1.0.0",
+  "description": "Prob7 of AOC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "CaptainLazarus",
+  "license": "ISC"
+}

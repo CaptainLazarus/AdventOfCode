@@ -3,7 +3,7 @@ const { callbackify } = require('util');
 
 // File Input working
 try {
-    var data = fs.readFileSync('test_2_input.txt', 'utf8');  
+    var data = fs.readFileSync('input.txt', 'utf8');  
 } catch(e) {
     console.log('Error:', e.stack);
 }
@@ -27,28 +27,28 @@ const go = (d , dp , currH , currT , dir) => {
         case "L":
             for(let i=1 ; i<=d ; i++){
                 currH[0] = currH[0]-1;
-                if(calc_distance(currH , currT) > 14.2) {currT[0] = currT[0]-1 ; currT[1] = currH[1]}
+                if(calc_distance(currH , currT) > 1.5) {currT[0] = currT[0]-1 ; currT[1] = currH[1]}
                 dp.add(JSON.stringify([currT[0] , currT[1]]));
             }
             break;
         case "R":
             for(let i=1 ; i<=d ; i++){
                 currH[0] = currH[0]+1;
-                if(calc_distance(currH , currT) > 14.2) {currT[0] = currT[0]+1 ; currT[1] = currH[1]}
+                if(calc_distance(currH , currT) > 1.5) {currT[0] = currT[0]+1 ; currT[1] = currH[1]}
                 dp.add(JSON.stringify([currT[0] , currT[1]]));
             }
             break;
         case "U":
             for(let i=1 ; i<=d ; i++){
                 currH[1] = currH[1]-1;
-                if(calc_distance(currH , currT) > 14.2) {currT[0] = currH[0] ; currT[1] = currT[1]-1}
+                if(calc_distance(currH , currT) > 1.5) {currT[0] = currH[0] ; currT[1] = currT[1]-1}
                 dp.add(JSON.stringify([currT[0] , currT[1]]));
             }
             break;
         case "D":
             for(let i=1 ; i<=d ; i++){
                 currH[1] = currH[1]+1;
-                if(calc_distance(currH , currT) > 14.2) {currT[0] = currH[0] ; currT[1] = currT[1]+1}
+                if(calc_distance(currH , currT) > 1.5) {currT[0] = currH[0] ; currT[1] = currT[1]+1}
                 dp.add(JSON.stringify([currT[0] , currT[1]]));
             }
             break;
@@ -68,6 +68,6 @@ a.forEach((x , i) => {
 console.log(dp.size);
 
 // -------------------------------------------------------------------------------------------------------
-// Part 2
+// Part 1.5
 // -------------------------------------------------------------------------------------------------------
 

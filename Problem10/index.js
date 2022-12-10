@@ -40,3 +40,66 @@ let b = a.reduce(([x , c , s , v] , n) => {
 } , [1 , 0 , 0 , new Set()])
 
 console.error(b);
+
+// ----------------------------------------------------------------
+// Part 2
+// ----------------------------------------------------------------
+
+let monitor = [];
+for(let i=0 ; i < 6 ; i++){
+    monitor.push([]);
+    for(let j=0 ; j<40 ; j++)
+        monitor[i].push(".");
+}
+
+const display = (monitor) => {
+    for(let i=0 ; i < 6 ; i++){
+        for(let j=0 ; j<40 ; j++)
+        process.stdout.write(monitor[i][j])
+        console.log();
+    }
+    console.log("\n")
+}
+
+display(monitor);
+
+// looping through instructions
+let index = 0;
+// adding cycles to a
+a.map(x => x[0] == "noop" ? x.push(0) : x.push(2));
+// console.error(a);
+
+
+let x = 1;
+for(let row = 0 ; row < 6 ; row++){
+    // looping each cycle
+    let beam = 0;
+    for(let beam = 0 ; beam<40 ; beam++){
+        // draw pixel
+        if(beam == x
+            || beam == x-1
+            || beam == x+1
+        ){
+            monitor[row][beam] = "#";
+        }
+
+        // after drawing pixel, calc new value of x for each cycle
+        if(a[index].at(-1) == 0) {
+            let instr = a[index][0];
+            if(instr == "noop") index++;
+            else {
+                x = x + (+a[index][1]);
+                index++;
+            }
+        }
+        else {
+            a[index][2] = a[index][2] - 1;
+            if(a[index][2] == 0){
+                x = x + (+a[index][1]); 
+                index++;
+            }
+        }
+    }
+}
+
+display(monitor);

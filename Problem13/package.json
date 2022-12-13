@@ -1,0 +1,11 @@
+{
+  "name": "problem13",
+  "version": "1.0.0",
+  "description": "Day 13 Advent of Code 2022",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "CaptainLazarus",
+  "license": "ISC"
+}

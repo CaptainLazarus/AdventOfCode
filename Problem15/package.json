@@ -1,0 +1,11 @@
+{
+  "name": "problem15",
+  "version": "1.0.0",
+  "description": "Day 15 of AOC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "CaptainLazarus",
+  "license": "ISC"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "problem12",
+  "version": "1.0.0",
+  "description": "Day 12 of advent of code",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "two": "node index_2.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CaptainLazarus",
+  "license": "ISC",
+  "dependencies": {
+    "collections": "^5.1.13",
+    "lodash": "^4.17.21"
+  }
+}

@@ -1,3 +1,4 @@
+const assert = require('assert');
 var fs = require('fs');
 const { maxHeaderSize } = require('http');
 const { callbackify } = require('util');
@@ -82,24 +83,6 @@ function calculate_number_of_beacons(a ,  arr_d , Y_LINE , min_x , max_x) {
     return output;
 }
 
-function calculate_number_of_beacons_2(a ,  arr_d , Y_LINE , min_x , max_x) {
-    let output = 0;
-    
-    for(let i=min_x ; i<=max_x ; i++) {
-        let is_beacon = true;
-        
-        for(const x in arr_d) {
-            let temp_d = d([i , Y_LINE] , JSON.parse(x));
-            let beacon_distance = arr_d[x];
-            if(temp_d > beacon_distance) is_beacon = is_beacon && true;
-            else {is_beacon = false ; break}
-        }
-        if(!is_beacon) output+=1;
-        if(is_beacon) return [i , Y_LINE];
-    }
-    return [];
-}
-
 function solve_part_1() {
     let Y_LINE = 10;
     let FILENAME = 'test_input.txt';
@@ -119,12 +102,58 @@ function solve_part_1() {
     return (output - b.size);
 }
 
-console.log(solve_part_1());
+// console.log(solve_part_1());
 // ------------------------------------------------------------------------------------------------------------------------------------
 // Part 2
 // ------------------------------------------------------------------------------------------------------------------------------------
 
+function generate_perimeter(sensor , arr_d , MAX) {
+    let perimeter = new Set();
+    let x = sensor[0];
+    let y = sensor[1];
+    let d = arr_d[JSON.stringify(sensor)];
+    // do_jaadoo. Fucking kill me
+    d = d+1;
+
+    // go top -> right
+    for (let i = 0 , j=d; i <= d; i++ , j--) {
+        if((x+i) >=0 && (x+i) <= MAX && (y+j)<=MAX && (y+j)>=0) perimeter.add(JSON.stringify([x+i , y+j]));
+    }
+
+    // go top -> left
+    for (let i = 0 , j=d; i >= -d; i-- , j--) {
+        if((x+i) >=0 && (x+i) <= MAX && (y+j)<=MAX && (y+j)>=0) perimeter.add(JSON.stringify([x+i , y+j]));
+    }
+
+    // go bot -> left
+    for (let i = 0 , j=-d; i >= -d; i-- , j++) {
+        if((x+i) >=0 && (x+i) <= MAX && (y+j)<=MAX && (y+j)>=0) perimeter.add(JSON.stringify([x+i , y+j]));
+    }
+
+    // go bot -> right
+    for (let i = 0 , j=-d; i <= -d; i++ , j++) {
+        if((x+i) >=0 && (x+i) <= MAX && (y+j)<=MAX && (y+j)>=0) perimeter.add(JSON.stringify([x+i , y+j]));
+    }
+
+    return perimeter;
+}
+
+
+function is_beacon(arr_d , point) {
+    let is_beacon = true;
+    
+    for(const x in arr_d) {
+        let temp_d = d(JSON.parse(x) , point);
+        let beacon_distance = arr_d[x];
+        if(temp_d <= beacon_distance) return false;
+    }
+    return true;
+}
+
 function solve_part_2() {
+    
+    // let FILENAME = 'test_input.txt';
+    // let MAX = 20;
     let FILENAME = 'input.txt';
     let MAX = 4000000;
 
@@ -132,20 +161,32 @@ function solve_part_2() {
     a = parseInput(a);
     a.sort(c);
     let [arr_d , ,] = extract_imp_params(a);
-    let min_x = 0 , max_x = MAX;
+    
+    // Gotten perimeter for all points. Now check these points for whether a beacon exists among them.
     let output = [];
-    for (let Y_LINE = 0; Y_LINE <= MAX ; Y_LINE++) {
-        let temp_output = calculate_number_of_beacons_2(a , arr_d , Y_LINE , min_x , max_x);
-        output = temp_output.length == 0 ? output : temp_output;
-        if(output.length > 0) break;
-        console.log(`\n
-        ------------
-        Lines Done : ${Y_LINE}
-        ------------
-        \n`);
+    for (let i = 0; i<a.length ; i++) {
+        let sensor = a[i][0];
+        // console.error(sensor);
+        let perimeter = generate_perimeter(sensor , arr_d , MAX);
+        
+        perimeter = [...perimeter].flat().map(x => JSON.parse(x));
+        console.error(perimeter);
+        for(let i=0 ; i<perimeter.length ; i++){
+            let point = perimeter[i];
+            let x = point[0];
+            let y = point[1];
+            
+            let is_a_beacon = is_beacon(arr_d , point);
+            if(is_a_beacon) {
+                if(x >=0 && x <= MAX && y<=MAX && y>=0) {
+                    output.push(perimeter[i]);
+                }
+            }
+        }
     }
-    console.log(output);
-    return (output[0]*MAX + output[1]);
+    output = [...new Set(output.map(x => JSON.stringify(x)))].map(y => JSON.parse(y)).flat();
+    console.error(output);
+    return ((output[0]*4000000) + output[1]);
 }
 
-console.log(solve_part_2());
+console.error(solve_part_2());
